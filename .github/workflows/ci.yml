@@ -18,12 +18,12 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install mlflow==2.19.0 dagshub scikit-learn pandas
+          pip install mlflow==2.19.0 dagshub scikit-learn pandas matplotlib seaborn
 
-      - name: Run MLflow Project
+      - name: Run Training Script
         env:
-          MLFLOW_TRACKING_USERNAME: AliAvvvv
-          MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
+          # Pastikan Secret DAGSHUB_TOKEN sudah terpasang di GitHub Settings
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
-          # Menjalankan MLflow project dengan environment lokal server GitHub
-          mlflow run MLProject_Folder/ --env-manager local
+          # Kita jalankan langsung file python-nya agar lebih stabil
+          python MLProject_Folder/modelling.py
