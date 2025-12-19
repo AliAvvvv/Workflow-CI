@@ -7,9 +7,6 @@ on:
 jobs:
   train-model:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -17,16 +14,19 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12.7'
+          python-version: '3.10' # Gunakan versi yang lebih stabil
 
       - name: Install Dependencies
         run: |
-          pip install mlflow==2.19.0 dagshub scikit-learn pandas matplotlib seaborn
+          # Pakai scikit-learn 1.5.2 agar kompatibel dengan autologging MLflow 2.19.0
+          pip install mlflow==2.19.0 dagshub scikit-learn==1.5.2 pandas matplotlib seaborn
 
       - name: Run Training Script
         env:
-          # TOKEN WAJIB ADA DI SETTINGS -> SECRETS
-          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
+          # Konfigurasi MLflow agar langsung menembak ke DagsHub
+          MLFLOW_TRACKING_URI: https://dagshub.com/AliAvvvv/Heart-Disease-MLOps.mlflow
+          MLFLOW_TRACKING_USERNAME: AliAvvvv
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
-          # Menggunakan mlflow run untuk memenuhi kriteria reviewer
+          # Perintah ini sekarang akan membuat run langsung di DagsHub
           mlflow run MLProject_Folder/ --env-manager local
