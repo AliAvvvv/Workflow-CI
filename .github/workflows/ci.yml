@@ -25,6 +25,6 @@ jobs:
           # Pastikan Secret DAGSHUB_TOKEN sudah terpasang di GitHub Settings Ali
           DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
-          # Perintah 'mlflow run' wajib digunakan untuk memenuhi standar MLOps Dicoding
-          # --env-manager local digunakan agar MLflow memakai environment python yang sudah diinstall di atas
+          # Reviewer mewajibkan perintah 'mlflow run' agar sesuai standar MLOps Dicoding
+          # --env-manager local digunakan untuk menggunakan environment yang sudah kita install via pip di atas
           mlflow run MLProject_Folder/ --env-manager local
