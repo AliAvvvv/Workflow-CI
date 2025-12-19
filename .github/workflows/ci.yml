@@ -22,8 +22,9 @@ jobs:
 
       - name: Run Training Script
         env:
-          # Pastikan Secret DAGSHUB_TOKEN sudah terpasang di GitHub Settings
+          # Pastikan Secret DAGSHUB_TOKEN sudah terpasang di GitHub Settings Ali
           DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
-          # Wajib perintah 'mlflow run' untuk standar MLOps
-          mlflow run MLProject_Folder/ --no-conda
+          # Perintah 'mlflow run' wajib digunakan untuk memenuhi standar MLOps Dicoding
+          # --env-manager local digunakan agar MLflow memakai environment python yang sudah diinstall di atas
+          mlflow run MLProject_Folder/ --env-manager local
