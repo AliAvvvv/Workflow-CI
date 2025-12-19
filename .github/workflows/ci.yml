@@ -7,7 +7,6 @@ on:
 jobs:
   train-model:
     runs-on: ubuntu-latest
-    # Menambahkan izin menulis agar robot GitHub bisa mengirim data ke DagsHub/MLflow
     permissions:
       contents: write
       
@@ -22,15 +21,12 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          # Instalasi library yang dibutuhkan di environment runner
           pip install mlflow==2.19.0 dagshub scikit-learn pandas matplotlib seaborn
 
       - name: Run Training Script
         env:
-          # Memasukkan Secret DAGSHUB_TOKEN ke dalam environment variable
-          # Ini kunci agar robot tidak minta login (AUTHORIZATION REQUIRED) lagi
+          # TOKEN WAJIB ADA DI SETTINGS -> SECRETS
           DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
-          # Reviewer mewajibkan perintah 'mlflow run' agar sesuai standar MLOps Dicoding
-          # --env-manager local digunakan agar MLflow memakai library yang sudah kita install via pip di atas
+          # Menggunakan mlflow run untuk memenuhi kriteria reviewer
           mlflow run MLProject_Folder/ --env-manager local

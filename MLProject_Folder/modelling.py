@@ -2,32 +2,31 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import dagshub
 import mlflow
 import mlflow.sklearn
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
 
-# --- FIX LOGIN HEADLESS (PENTING) ---
-# Mengambil token dari GitHub Secrets yang kita oper ke environment
+# --- KONFIGURASI MANUAL MLFLOW (Bypass dagshub.init) ---
 token = os.getenv("DAGSHUB_TOKEN")
+# Ganti URL ini sesuai repositori kamu
+repo_url = "https://dagshub.com/AliAvvvv/Heart-Disease-MLOps.mlflow"
+
 if token:
+    mlflow.set_tracking_uri(repo_url)
     os.environ["MLFLOW_TRACKING_USERNAME"] = "AliAvvvv"
     os.environ["MLFLOW_TRACKING_PASSWORD"] = token
-    os.environ["DAGSHUB_USER_TOKEN"] = token
+    print("Berhasil terhubung ke DagsHub via Token!")
 
-# 1. Inisialisasi DagsHub
-dagshub.init(repo_owner='AliAvvvv', repo_name='Heart-Disease-MLOps', mlflow=True)
-
-# 2. Load Data
+# 1. Load Data
 df = pd.read_csv('heart_disease_preprocessed.csv')
 X = df.drop('target', axis=1)
 y = df['target']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# 3. Autologging & Manual Logging (Syarat Advanced Repo CI)
+# 2. Autologging & Manual Logging (Syarat Advanced Repo CI)
 mlflow.autolog()
 
 with mlflow.start_run(run_name="CI_Advanced_AliAssegaf", nested=True):
