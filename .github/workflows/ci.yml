@@ -25,5 +25,5 @@ jobs:
           # Pastikan Secret DAGSHUB_TOKEN sudah terpasang di GitHub Settings
           DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
         run: |
-          # Kita jalankan langsung file python-nya agar lebih stabil
-          python MLProject_Folder/modelling.py
+          # Wajib perintah 'mlflow run' untuk standar MLOps
+          mlflow run MLProject_Folder/ --no-conda
